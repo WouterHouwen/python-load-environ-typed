@@ -102,23 +102,44 @@ def load_binary_file_from_path(raw: str) -> bytes:
         raise ValueError(f'No permissions to read: {raw}')
 
 
-def load_ascii_file_from_path(raw: str) -> str:
+def load_ascii_file_from_path(raw: str, strip_contents: bool = False) -> str:
+    """
+    Returns the contents of a file decoded with ASCII
+
+    If strip_contents is True, then the leading and trailing whitespaces are removed
+    from the file contents
+    """
     bts = load_binary_file_from_path(raw)
 
     try:
-        return bts.decode('ASCII')
+        file_contents = bts.decode('ASCII')
     except ValueError:
         raise ValueError(f'Could not decode as ASCII: {raw}')
 
+    if strip_contents:
+        file_contents = file_contents.strip()
 
-def load_utf8_file_from_path(raw: str) -> str:
+    return file_contents
+
+
+def load_utf8_file_from_path(raw: str, strip_contents: bool = False) -> str:
+    """
+    Returns the contents of a file decoded with UTF-8
+
+    If strip_contents is True, then the leading and trailing whitespaces are removed
+    from the file contents
+    """
     bts = load_binary_file_from_path(raw)
 
     try:
-        return bts.decode('UTF-8')
+        file_contents = bts.decode('UTF-8')
     except ValueError:
         raise ValueError(f'Could not decode as UTF-8: {raw}')
 
+    if strip_contents:
+        file_contents = file_contents.strip()
+
+    return file_contents
 
 def load_pem_file_from_path(
     raw: str,
